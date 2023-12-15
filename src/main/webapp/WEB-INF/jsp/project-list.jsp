@@ -6,7 +6,11 @@
 </head>
 <body>
     <ul>
-        <c:forEach var=""></c:forEach>
+        <c:forEach var="project" items="${requestScope.projects}">
+            <li>
+                <a href="project?id=${project.id}">${project}</a>
+            </li>
+        </c:forEach>
     </ul>
 </body>
 </html>

@@ -8,6 +8,9 @@ import com.blokdev.system.mapper.CreateProjectMapper;
 import com.blokdev.system.validator.CreateProjectValidator;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+import java.util.NoSuchElementException;
+
 import static lombok.AccessLevel.PRIVATE;
 
 @NoArgsConstructor(access = PRIVATE)
@@ -24,6 +27,15 @@ public class ProjectService {
         }
         var project = createProjectMapper.mapFrom(createProjectDTO);
         return projectDao.save(project);
+    }
+
+    public List<Project> getAllProject() {
+        return projectDao.findAll();
+    }
+
+    public Project getProjectById(Long id) {
+        return projectDao.findById(id)
+                .orElseThrow(NoSuchElementException::new);
     }
 
     public static ProjectService getInstance() {

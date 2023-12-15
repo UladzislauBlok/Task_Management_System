@@ -5,6 +5,8 @@ import com.blokdev.system.dto.CreateProjectDTO;
 import com.blokdev.system.util.LocalDateFormatter;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
+
 import static lombok.AccessLevel.PRIVATE;
 
 @NoArgsConstructor(access = PRIVATE)
@@ -22,6 +24,11 @@ public class CreateProjectValidator implements Validator<CreateProjectDTO> {
 
         if (!LocalDateFormatter.isValid(object.getStartDate())) {
             validationResult.addError(ValidationError.of("invalid.date", "Date of incorrect format"));
+        } else {
+            var date = LocalDateFormatter.format(object.getStartDate());
+            if (date.isBefore(LocalDate.now())) {
+                validationResult.addError(ValidationError.of("invalid.date", "Date earlier than the current date"));
+            }
         }
 
         return validationResult;
