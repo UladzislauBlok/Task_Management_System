@@ -1,4 +1,4 @@
-package com.blokdev.hotelsystem.entity;
+package com.blokdev.system.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

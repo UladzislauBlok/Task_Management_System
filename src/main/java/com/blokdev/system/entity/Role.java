@@ -1,4 +1,4 @@
-package com.blokdev.hotelsystem.entity;
+package com.blokdev.system.entity;
 
 public enum Role {
     ADMIN,

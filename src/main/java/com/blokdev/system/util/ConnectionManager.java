@@ -1,7 +1,7 @@
-package com.blokdev.hotelsystem.util;
+package com.blokdev.system.util;
 
-import lombok.NoArgsConstructor;
 import lombok.SneakyThrows;
+import lombok.experimental.UtilityClass;
 
 import java.lang.reflect.Proxy;
 import java.sql.Connection;
@@ -11,10 +11,8 @@ import java.util.List;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 
-import static lombok.AccessLevel.PRIVATE;
 
-
-@NoArgsConstructor(access = PRIVATE)
+@UtilityClass
 public class ConnectionManager {
     private static final String URL_KEY = "db.url";
     private static final String USER_KEY = "db.user";

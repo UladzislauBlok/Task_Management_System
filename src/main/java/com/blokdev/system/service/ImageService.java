@@ -1,6 +1,6 @@
-package com.blokdev.hotelsystem.service;
+package com.blokdev.system.service;
 
-import com.blokdev.hotelsystem.util.PropertiesUtil;
+import com.blokdev.system.util.PropertiesUtil;
 import lombok.NoArgsConstructor;
 import lombok.SneakyThrows;
 

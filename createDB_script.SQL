@@ -1,8 +1,12 @@
-CREATE DATABASE task_system_DB;
+/*psql -U postgres*/
 
-CREATE USER task_system_DB_admin WITH PASSWORD 'pass';
+CREATE DATABASE task_system_db;
 
-GRANT ALL PRIVILEGES ON DATABASE task_system_DB TO task_system_DB_admin;
+CREATE USER task_system_db_admin WITH PASSWORD 'pass';
+
+ALTER DATABASE task_system_db OWNER TO task_system_db_admin;
+
+/*psql -U task_system_db_admin -d pass*/
 
 CREATE TABLE users
 (

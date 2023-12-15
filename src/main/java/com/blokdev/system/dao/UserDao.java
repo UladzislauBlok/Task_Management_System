@@ -1,8 +1,8 @@
-package com.blokdev.hotelsystem.dao;
+package com.blokdev.system.dao;
 
-import com.blokdev.hotelsystem.entity.Role;
-import com.blokdev.hotelsystem.entity.User;
-import com.blokdev.hotelsystem.util.ConnectionManager;
+import com.blokdev.system.entity.Role;
+import com.blokdev.system.entity.User;
+import com.blokdev.system.util.ConnectionManager;
 import lombok.NoArgsConstructor;
 import lombok.SneakyThrows;
 
@@ -16,6 +16,8 @@ import static lombok.AccessLevel.PRIVATE;
 
 @NoArgsConstructor(access = PRIVATE)
 public class UserDao implements Dao<Long, User> {
+    private static final UserDao INSTANCE = new UserDao();
+
 
     private static final String FIND_ALL_SQL = """
             SELECT id, first_name, last_name, password, email, role, image
@@ -25,6 +27,16 @@ public class UserDao implements Dao<Long, User> {
             SELECT id, first_name, last_name, password, email, role, image
             FROM users
             WHERE id = ?
+            """;
+    private static final String FIND_BY_EMAIL_AND_PASSWORD_SQL = """
+            SELECT id, first_name, last_name, password, email, role, image
+            FROM users
+            WHERE email = ? AND password = ?
+            """;
+    private static final String FIND_BY_EMAIL_SQL = """
+            SELECT id, first_name, last_name, password, email, role, image
+            FROM users
+            WHERE email = ?
             """;
     private static final String DELETE_SQL = """
             DELETE FROM users
@@ -64,6 +76,36 @@ public class UserDao implements Dao<Long, User> {
     public Optional<User> findById(Long id) {
         try (var connection = ConnectionManager.get();
              var statement = connection.prepareStatement(FIND_BY_ID_SQL)) {
+            statement.setLong(1, id);
+            var resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                return Optional.of(buildUser(resultSet));
+            } else {
+                return Optional.empty();
+            }
+        }
+    }
+
+    @SneakyThrows
+    public Optional<User> findByEmailAndPassword(String email, String password) {
+        try (var connection = ConnectionManager.get();
+             var statement = connection.prepareStatement(FIND_BY_EMAIL_AND_PASSWORD_SQL)) {
+            statement.setString(1, email);
+            statement.setString(2, password);
+            var resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                return Optional.of(buildUser(resultSet));
+            } else {
+                return Optional.empty();
+            }
+        }
+    }
+
+    @SneakyThrows
+    public Optional<User> findByEmail(String email) {
+        try (var connection = ConnectionManager.get();
+             var statement = connection.prepareStatement(FIND_BY_EMAIL_SQL)) {
+            statement.setString(1, email);
             var resultSet = statement.executeQuery();
             if (resultSet.next()) {
                 return Optional.of(buildUser(resultSet));
@@ -132,5 +174,9 @@ public class UserDao implements Dao<Long, User> {
                 .role(Role.valueOf(resultSet.getString("role")))
                 .image(resultSet.getString("image"))
                 .build();
+    }
+
+    public static UserDao getInstance() {
+        return INSTANCE;
     }
 }

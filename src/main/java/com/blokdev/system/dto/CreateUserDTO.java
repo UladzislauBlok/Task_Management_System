@@ -1,7 +1,11 @@
-package com.blokdev.hotelsystem.dto;
+package com.blokdev.system.dto;
 
 import jakarta.servlet.http.Part;
+import lombok.Builder;
+import lombok.Data;
 
+@Data
+@Builder
 public class CreateUserDTO {
     private String firstName;
     private String lastName;

@@ -1,13 +1,12 @@
-package com.blokdev.hotelsystem.util;
+package com.blokdev.system.util;
 
-import lombok.NoArgsConstructor;
+import lombok.experimental.UtilityClass;
 
 import java.io.IOException;
 import java.util.Properties;
 
-import static lombok.AccessLevel.PRIVATE;
 
-@NoArgsConstructor(access = PRIVATE)
+@UtilityClass
 public final class PropertiesUtil {
     private static final Properties PROPERTIES = new Properties();
 

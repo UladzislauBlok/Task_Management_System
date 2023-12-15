@@ -1,4 +1,4 @@
-package com.blokdev.hotelsystem.dao;
+package com.blokdev.system.dao;
 
 import java.util.List;
 import java.util.Optional;
