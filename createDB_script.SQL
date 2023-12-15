@@ -19,3 +19,11 @@ CREATE TABLE users
     image      VARCHAR(124)        NOT NULL
 );
 
+CREATE TABLE projects
+(
+    id          SERIAL PRIMARY KEY,
+    name        VARCHAR(64) UNIQUE NOT NULL,
+    description TEXT               NOT NULL,
+    start_date  DATE               NOT NULL
+);
+
