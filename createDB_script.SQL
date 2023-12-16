@@ -27,3 +27,20 @@ CREATE TABLE projects
     start_date  DATE               NOT NULL
 );
 
+CREATE TABLE tasks
+(
+    id            SERIAL PRIMARY KEY,
+    name          VARCHAR(64)                      NOT NULL,
+    description   TEXT                             NOT NULL,
+    status        VARCHAR(32)                      NOT NULL,
+    project_id_fk INTEGER REFERENCES projects (id) NOT NULL
+);
+
+CREATE TABLE task_events
+(
+    id              SERIAL PRIMARY KEY,
+    task_id_fk      INTEGER REFERENCES tasks (id) NOT NULL,
+    description     TEXT                          NOT NULL,
+    event_user_name VARCHAR(255)                  NOT NULL
+);
+

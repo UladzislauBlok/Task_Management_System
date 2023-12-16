@@ -5,15 +5,13 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDate;
-
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Project {
+public class TaskEvent {
     private Long id;
-    private String name;
+    private Long taskId;
     private String description;
-    private LocalDate startDate;
+    private String eventUserName;
 }

@@ -6,7 +6,7 @@ import lombok.Data;
 @Data
 @Builder
 public class CreateProjectDTO {
-    String name;
-    String description;
-    String startDate;
+    private String name;
+    private String description;
+    private String startDate;
 }
