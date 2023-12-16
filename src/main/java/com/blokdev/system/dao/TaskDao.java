@@ -6,6 +6,7 @@ import com.blokdev.system.util.ConnectionManager;
 import lombok.NoArgsConstructor;
 import lombok.SneakyThrows;
 
+import java.sql.Connection;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
@@ -21,6 +22,11 @@ public class TaskDao implements Dao<Long, Task> {
     private static final String FIND_ALL_SQL = """
             SELECT id, name, description, status, project_id_fk
             FROM tasks
+            """;
+    private static final String FIND_ALL_BY_PROJECT_ID_SQL = """
+            SELECT id, name, description, status, project_id_fk
+            FROM tasks
+            WHERE project_id_fk = ?
             """;
     private static final String FIND_BY_ID_SQL = """
             SELECT id, name, description, status, project_id_fk
@@ -53,7 +59,21 @@ public class TaskDao implements Dao<Long, Task> {
             List<Task> taskList = new ArrayList<>();
             var resultSet = statement.executeQuery();
             while (resultSet.next()) {
-                taskList.add(buildTask(resultSet));
+                taskList.add(buildTask(resultSet, connection));
+            }
+            return taskList;
+        }
+    }
+
+    @SneakyThrows
+    public List<Task> findAllByProjectId(Long id) {
+        try (var connection = ConnectionManager.get();
+             var statement = connection.prepareStatement(FIND_ALL_BY_PROJECT_ID_SQL)) {
+            List<Task> taskList = new ArrayList<>();
+            statement.setLong(1, id);
+            var resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                taskList.add(buildTask(resultSet, connection));
             }
             return taskList;
         }
@@ -67,7 +87,7 @@ public class TaskDao implements Dao<Long, Task> {
             statement.setLong(1, id);
             var resultSet = statement.executeQuery();
             if (resultSet.next()) {
-                return Optional.of(buildTask(resultSet));
+                return Optional.of(buildTask(resultSet, connection));
             } else {
                 return Optional.empty();
             }
@@ -119,13 +139,15 @@ public class TaskDao implements Dao<Long, Task> {
     }
 
     @SneakyThrows
-    private Task buildTask(ResultSet resultSet) {
+    private Task buildTask(ResultSet resultSet, Connection connection) {
         return Task.builder()
                 .id(resultSet.getLong("id"))
                 .name(resultSet.getString("name"))
                 .description(resultSet.getString("description"))
                 .status(Status.valueOf(resultSet.getString("status")))
-                .taskEventList(taskEventDao.findAllByTskId(resultSet.getLong("project_id_fk")))
+                .taskEventList(taskEventDao.findAllByTskId(
+                        resultSet.getLong("project_id_fk"),
+                        connection))
                 .build();
     }
 

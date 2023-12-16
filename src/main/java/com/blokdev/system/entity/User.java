@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -17,4 +18,5 @@ public class User {
     private String password;
     private Role role;
     private String image;
+    private Project project;
 }

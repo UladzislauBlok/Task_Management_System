@@ -2,6 +2,7 @@ package com.blokdev.system.dao;
 
 import com.blokdev.system.entity.Role;
 import com.blokdev.system.entity.User;
+import com.blokdev.system.exception.EntryNotFoundException;
 import com.blokdev.system.util.ConnectionManager;
 import lombok.NoArgsConstructor;
 import lombok.SneakyThrows;
@@ -17,24 +18,23 @@ import static lombok.AccessLevel.PRIVATE;
 @NoArgsConstructor(access = PRIVATE)
 public class UserDao implements Dao<Long, User> {
     private static final UserDao INSTANCE = new UserDao();
-
-
+    private final ProjectDao projectDao = ProjectDao.getInstance();
     private static final String FIND_ALL_SQL = """
-            SELECT id, first_name, last_name, password, email, role, image
+            SELECT id, first_name, last_name, password, email, role, image, project_id_fk
             FROM users;
             """;
     private static final String FIND_BY_ID_SQL = """
-            SELECT id, first_name, last_name, password, email, role, image
+            SELECT id, first_name, last_name, password, email, role, image, project_id_fk
             FROM users
             WHERE id = ?
             """;
     private static final String FIND_BY_EMAIL_AND_PASSWORD_SQL = """
-            SELECT id, first_name, last_name, password, email, role, image
+            SELECT id, first_name, last_name, password, email, role, image, project_id_fk
             FROM users
             WHERE email = ? AND password = ?
             """;
     private static final String FIND_BY_EMAIL_SQL = """
-            SELECT id, first_name, last_name, password, email, role, image
+            SELECT id, first_name, last_name, password, email, role, image, project_id_fk
             FROM users
             WHERE email = ?
             """;
@@ -43,7 +43,7 @@ public class UserDao implements Dao<Long, User> {
             WHERE id = ?
             """;
     private static final String INSERT_SQL = """
-            INSERT INTO users (first_name, last_name, password, email, role, image)
+            INSERT INTO users (first_name, last_name, password, email, role, image, project_id_fk)
             VALUES (?,?,?,?,?,?)
             """;
     private static final String UPDATE_SQL = """
@@ -53,7 +53,8 @@ public class UserDao implements Dao<Long, User> {
             password = ?,
             email = ?,
             role = ?,
-            image = ?
+            image = ?,
+            project_id_fk = ?
             WHERE id = ?
             """;
 
@@ -65,7 +66,7 @@ public class UserDao implements Dao<Long, User> {
             List<User> userList = new ArrayList<>();
             var resultSet = statement.executeQuery();
             while (resultSet.next()) {
-                userList.add(buildUser(resultSet));
+                userList.add(buildUser(resultSet, connection));
             }
             return userList;
         }
@@ -79,7 +80,7 @@ public class UserDao implements Dao<Long, User> {
             statement.setLong(1, id);
             var resultSet = statement.executeQuery();
             if (resultSet.next()) {
-                return Optional.of(buildUser(resultSet));
+                return Optional.of(buildUser(resultSet, connection));
             } else {
                 return Optional.empty();
             }
@@ -94,7 +95,7 @@ public class UserDao implements Dao<Long, User> {
             statement.setString(2, password);
             var resultSet = statement.executeQuery();
             if (resultSet.next()) {
-                return Optional.of(buildUser(resultSet));
+                return Optional.of(buildUser(resultSet, connection));
             } else {
                 return Optional.empty();
             }
@@ -108,7 +109,7 @@ public class UserDao implements Dao<Long, User> {
             statement.setString(1, email);
             var resultSet = statement.executeQuery();
             if (resultSet.next()) {
-                return Optional.of(buildUser(resultSet));
+                return Optional.of(buildUser(resultSet, connection));
             } else {
                 return Optional.empty();
             }
@@ -173,6 +174,9 @@ public class UserDao implements Dao<Long, User> {
                 .password(resultSet.getString("password"))
                 .role(Role.valueOf(resultSet.getString("role")))
                 .image(resultSet.getString("image"))
+                .project(projectDao.findById(
+                        resultSet.getLong("project_id_fk"))
+                        .orElseThrow(EntryNotFoundException::new))
                 .build();
     }
 

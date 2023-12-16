@@ -5,6 +5,8 @@
     <title>Create user</title>
 </head>
 <body>
+<h1>Create a new user:</h1>
+<br>
 <form action="${pageContext.request.contextPath}/create-user" method="post" enctype="multipart/form-data">
     <label for="first_name">First name:
         <input type="text" name="first_name" id="first_name" required>

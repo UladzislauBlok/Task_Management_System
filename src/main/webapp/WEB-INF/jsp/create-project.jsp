@@ -5,6 +5,8 @@
     <title>Create project</title>
 </head>
 <body>
+<h1>Create a new project:</h1>
+<br>
 <form action="${pageContext.request.contextPath}/create-project" method="post">
     <label for="name">Name:
         <input type="text" name="name" id="name" required>

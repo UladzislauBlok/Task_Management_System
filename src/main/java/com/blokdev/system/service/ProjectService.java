@@ -2,14 +2,16 @@ package com.blokdev.system.service;
 
 import com.blokdev.system.dao.ProjectDao;
 import com.blokdev.system.dto.CreateProjectDTO;
-import com.blokdev.system.entity.Project;
+import com.blokdev.system.dto.ProjectDTO;
+import com.blokdev.system.exception.EntryNotFoundException;
 import com.blokdev.system.exception.ValidationException;
 import com.blokdev.system.mapper.CreateProjectMapper;
+import com.blokdev.system.mapper.ProjectMapper;
 import com.blokdev.system.validator.CreateProjectValidator;
 import lombok.NoArgsConstructor;
 
 import java.util.List;
-import java.util.NoSuchElementException;
+import java.util.stream.Collectors;
 
 import static lombok.AccessLevel.PRIVATE;
 
@@ -19,23 +21,27 @@ public class ProjectService {
     private final CreateProjectValidator createProjectValidator = CreateProjectValidator.getInstance();
     private final CreateProjectMapper createProjectMapper = CreateProjectMapper.getInstance();
     private final ProjectDao projectDao = ProjectDao.getInstance();
+    private final ProjectMapper projectMapper = ProjectMapper.getInstance();
 
-    public Project createProject(CreateProjectDTO createProjectDTO) {
+    public void createProject(CreateProjectDTO createProjectDTO) {
         var validationResult = createProjectValidator.isValid(createProjectDTO);
         if (!validationResult.isValid()) {
             throw new ValidationException(validationResult.getValidationErrorList());
         }
         var project = createProjectMapper.mapFrom(createProjectDTO);
-        return projectDao.save(project);
+        projectDao.save(project);
     }
 
-    public List<Project> getAllProject() {
-        return projectDao.findAll();
+    public List<ProjectDTO> getAllProject() {
+        return projectDao.findAll().stream()
+                .map(projectMapper::mapFrom)
+                .collect(Collectors.toList());
     }
 
-    public Project getProjectById(Long id) {
-        return projectDao.findById(id)
-                .orElseThrow(NoSuchElementException::new);
+    public ProjectDTO getProjectById(Long id) {
+        var project = projectDao.findById(id)
+                .orElseThrow(EntryNotFoundException::new);
+        return projectMapper.mapFrom(project);
     }
 
     public static ProjectService getInstance() {

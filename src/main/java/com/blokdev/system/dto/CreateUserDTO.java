@@ -2,15 +2,15 @@ package com.blokdev.system.dto;
 
 import jakarta.servlet.http.Part;
 import lombok.Builder;
-import lombok.Data;
+import lombok.Value;
 
-@Data
+@Value
 @Builder
 public class CreateUserDTO {
-    private String firstName;
-    private String lastName;
-    private String password;
-    private String email;
-    private String role;
-    private Part image;
+    String firstName;
+    String lastName;
+    String password;
+    String email;
+    String role;
+    Part image;
 }

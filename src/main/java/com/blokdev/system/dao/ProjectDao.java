@@ -135,10 +135,6 @@ public class ProjectDao implements Dao<Long, Project> {
         }
     }
 
-    public static ProjectDao getInstance() {
-        return INSTANCE;
-    }
-
     @SneakyThrows
     private Project buildProject(ResultSet resultSet) {
         return Project.builder()
@@ -147,5 +143,9 @@ public class ProjectDao implements Dao<Long, Project> {
                 .description(resultSet.getString("description"))
                 .startDate(resultSet.getDate("start_date").toLocalDate())
                 .build();
+    }
+
+    public static ProjectDao getInstance() {
+        return INSTANCE;
     }
 }

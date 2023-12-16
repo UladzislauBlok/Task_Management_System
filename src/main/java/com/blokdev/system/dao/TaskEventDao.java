@@ -5,6 +5,7 @@ import com.blokdev.system.util.ConnectionManager;
 import lombok.NoArgsConstructor;
 import lombok.SneakyThrows;
 
+import java.sql.Connection;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
@@ -61,9 +62,8 @@ public class TaskEventDao implements Dao<Long, TaskEvent>{
     }
 
     @SneakyThrows
-    public List<TaskEvent> findAllByTskId(Long id) {
-        try (var connection = ConnectionManager.get();
-             var statement = connection.prepareStatement(FIND_ALL_BY_TASK_ID_SQL)) {
+    public List<TaskEvent> findAllByTskId(Long id, Connection connection) {
+        try (var statement = connection.prepareStatement(FIND_ALL_BY_TASK_ID_SQL)) {
             List<TaskEvent> taskEventList = new ArrayList<>();
             statement.setLong(1, id);
             var resultSet = statement.executeQuery();
