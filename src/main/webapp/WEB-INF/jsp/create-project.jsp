@@ -5,6 +5,7 @@
     <title>Create project</title>
 </head>
 <body>
+<%@ include file="headers/logout.jsp"%>
 <h1>Create a new project:</h1>
 <br>
 <form action="${pageContext.request.contextPath}/create-project" method="post">

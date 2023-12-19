@@ -3,6 +3,7 @@ package com.blokdev.system.service;
 import com.blokdev.system.dao.ProjectDao;
 import com.blokdev.system.dto.CreateProjectDTO;
 import com.blokdev.system.dto.ProjectDTO;
+import com.blokdev.system.entity.Project;
 import com.blokdev.system.exception.EntryNotFoundException;
 import com.blokdev.system.exception.ValidationException;
 import com.blokdev.system.mapper.CreateProjectMapper;
@@ -38,10 +39,15 @@ public class ProjectService {
                 .collect(Collectors.toList());
     }
 
-    public ProjectDTO getProjectById(Long id) {
+    public ProjectDTO getProjectDTOById(Long id) {
         var project = projectDao.findById(id)
                 .orElseThrow(EntryNotFoundException::new);
         return projectMapper.mapFrom(project);
+    }
+
+    public Project getProjectEntryById(Long id) {
+        return projectDao.findById(id)
+                .orElseThrow(EntryNotFoundException::new);
     }
 
     public static ProjectService getInstance() {

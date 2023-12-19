@@ -5,6 +5,7 @@
     <title>Create task</title>
 </head>
 <body>
+<%@ include file="headers/logout.jsp"%>
 <h1>Create a new task:</h1>
 <br>
 <form action="${pageContext.request.contextPath}/create-task" method="post">

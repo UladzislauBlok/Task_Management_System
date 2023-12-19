@@ -1,7 +1,5 @@
 package com.blokdev.system.servlet;
 
-import com.blokdev.system.exception.InvalidURLException;
-import com.blokdev.system.service.TaskService;
 import com.blokdev.system.util.JspPathUtil;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -11,20 +9,11 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 
-@WebServlet("/task")
-public class TaskServlet extends HttpServlet {
-    private final TaskService taskService = TaskService.getInstance();
-
+@WebServlet("/")
+public class RootServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        var id = req.getParameter("id");
-
-        if (id == null) {
-            throw new InvalidURLException();
-        }
-
-        req.setAttribute("task", taskService.getTaskById(Long.valueOf(id)));
-        req.getRequestDispatcher(JspPathUtil.getPath("task"))
+        req.getRequestDispatcher(JspPathUtil.getPath("root"))
                 .forward(req, resp);
     }
 }

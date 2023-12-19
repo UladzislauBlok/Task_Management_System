@@ -25,7 +25,7 @@ public class ProjectServlet extends HttpServlet {
                     .forward(req, resp);
         } else {
             Long projectId = Long.valueOf(req.getParameter("id"));
-            req.setAttribute("project", projectService.getProjectById(projectId));
+            req.setAttribute("project", projectService.getProjectDTOById(projectId));
             req.setAttribute("tasks", taskService.getTaskListByProjectId(projectId));
 
             req.getRequestDispatcher(JspPathUtil.getPath("project"))

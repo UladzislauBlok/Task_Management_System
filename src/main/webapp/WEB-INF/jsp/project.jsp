@@ -5,6 +5,7 @@
     <title>Project</title>
 </head>
 <body>
+<%@ include file="headers/logout.jsp"%>
 <h1>${requestScope.project.name}</h1>
     <p>
         ${requestScope.project.description}
@@ -13,7 +14,7 @@
     </p>
     <c:forEach var="task" items="${requestScope.tasks}">
         <li>
-            <a href="task?projectId=${task.id}">Name: ${task.name} | Status: ${task.status}</a>
+            <a href="task?id=${task.id}">Name: ${task.name} | Status: ${task.status}</a>
             <br>
         </li>
     </c:forEach>

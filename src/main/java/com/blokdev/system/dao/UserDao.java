@@ -162,7 +162,8 @@ public class UserDao implements Dao<Long, User> {
             statement.setString(4, entity.getEmail());
             statement.setString(5, entity.getRole().name());
             statement.setString(6, entity.getImage());
-            statement.setLong(7, entity.getId());
+            statement.setLong(7, entity.getProject().getId());
+            statement.setLong(8, entity.getId());
             return statement.executeUpdate() > 0;
         }
     }

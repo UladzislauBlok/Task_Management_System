@@ -5,6 +5,7 @@
     <title>Create user</title>
 </head>
 <body>
+<%@ include file="headers/logout.jsp"%>
 <h1>Create a new user:</h1>
 <br>
 <form action="${pageContext.request.contextPath}/create-user" method="post" enctype="multipart/form-data">

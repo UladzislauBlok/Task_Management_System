@@ -12,6 +12,7 @@ import lombok.NoArgsConstructor;
 import lombok.SneakyThrows;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static lombok.AccessLevel.PRIVATE;
@@ -24,6 +25,7 @@ public class UserService {
     private final CreateUserValidator createUserValidator = CreateUserValidator.getInstance();
     private final CreateUserMapper createUserMapper = CreateUserMapper.getInstance();
     private final ImageService imageService = ImageService.getInstance();
+    private final ProjectService projectService = ProjectService.getInstance();
 
     @SneakyThrows
     public void create(CreateUserDTO createUserDTO) {
@@ -43,11 +45,30 @@ public class UserService {
                 .collect(Collectors.toList());
     }
 
+    public List<UserDTO> getAllUsersWithoutProject() {
+        return getAllUsers().stream()
+                .filter(userDTO -> userDTO.getProject() == null)
+                .toList();
+    }
+
     public UserDTO getUserById(Long userId) {
         var user = userDao.findById(userId)
                 .orElseThrow(EntryNotFoundException::new);
 
         return userMapper.mapFrom(user);
+    }
+
+    public Optional<UserDTO> login(String email, String password) {
+        return userDao.findByEmailAndPassword(email, password)
+                .map(userMapper::mapFrom);
+    }
+
+    public void addUserToProject(Long userId, Long projectId) {
+        var user = userDao.findById(userId)
+                .orElseThrow(EntryNotFoundException::new);
+
+        user.setProject(projectService.getProjectEntryById(projectId));
+        userDao.update(user);
     }
 
     public static UserService getInstance() {

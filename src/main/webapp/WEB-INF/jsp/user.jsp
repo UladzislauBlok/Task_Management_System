@@ -5,6 +5,7 @@
     <title>User</title>
 </head>
 <body>
+<%@ include file="headers/logout.jsp"%>
     <h1>User ${requestScope.user.firstName} ${requestScope.user.lastName}</h1>
     <img src="${pageContext.request.contextPath}/images/users?id=${requestScope.user.id}&image=${requestScope.user.image}" alt="user img">
     <br>

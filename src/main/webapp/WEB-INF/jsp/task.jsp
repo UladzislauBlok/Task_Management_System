@@ -5,6 +5,7 @@
     <title>Task</title>
 </head>
 <body>
+<%@ include file="headers/logout.jsp"%>
     <h1>${requestScope.task.name}</h1>
     <br>
     <p>Description: ${requestScope.task.description}</p>

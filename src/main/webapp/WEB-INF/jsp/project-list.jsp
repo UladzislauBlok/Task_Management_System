@@ -5,6 +5,7 @@
     <title>Project list</title>
 </head>
 <body>
+<%@ include file="headers/logout.jsp"%>
 <h1>List of projects:</h1>
     <ul>
         <c:forEach var="project" items="${requestScope.projects}">

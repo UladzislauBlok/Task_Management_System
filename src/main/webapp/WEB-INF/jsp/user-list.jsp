@@ -5,6 +5,7 @@
     <title>User list</title>
 </head>
 <body>
+<%@ include file="headers/logout.jsp"%>
 <h1>List of users:</h1>
 <ul>
     <c:forEach var="user" items="${requestScope.users}">
