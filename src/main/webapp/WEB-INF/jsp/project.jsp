@@ -13,7 +13,7 @@
     </p>
     <c:forEach var="task" items="${requestScope.tasks}">
         <li>
-            <a href="project?id=${task.id}">Name: ${task.name} | Status: ${task.status}</a>
+            <a href="task?projectId=${task.id}">Name: ${task.name} | Status: ${task.status}</a>
             <br>
         </li>
     </c:forEach>

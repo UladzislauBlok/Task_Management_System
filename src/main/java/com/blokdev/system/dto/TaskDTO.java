@@ -1,7 +1,6 @@
 package com.blokdev.system.dto;
 
 import com.blokdev.system.entity.Status;
-import com.blokdev.system.entity.TaskEvent;
 import lombok.Builder;
 import lombok.Value;
 
@@ -14,5 +13,6 @@ public class TaskDTO {
     String name;
     String description;
     Status status;
-    List<TaskEvent> taskEventList;
+    Long projectId;
+    List<TaskEventDTO> taskEventList;
 }

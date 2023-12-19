@@ -33,6 +33,11 @@ public class TaskDao implements Dao<Long, Task> {
             FROM tasks
             WHERE id = ?
             """;
+    private static final String FIND_BY_NAME_AND_PROJECT_ID_SQL = """
+            SELECT id, name, description, status, project_id_fk
+            FROM tasks
+            WHERE name = ? AND project_id_fk = ?
+            """;
     private static final String DELETE_SQL = """
             DELETE FROM tasks
             WHERE id = ?
@@ -94,6 +99,21 @@ public class TaskDao implements Dao<Long, Task> {
         }
     }
 
+    @SneakyThrows
+    public Optional<Task> findByNameAndProjectId(String name, Long projectId) {
+        try (var connection = ConnectionManager.get();
+             var statement = connection.prepareStatement(FIND_BY_NAME_AND_PROJECT_ID_SQL)) {
+            statement.setString(1, name);
+            statement.setLong(2, projectId);
+            var resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                return Optional.of(buildTask(resultSet, connection));
+            } else {
+                return Optional.empty();
+            }
+        }
+    }
+
     @Override
     @SneakyThrows
     public boolean delete(Long id) {
@@ -145,8 +165,9 @@ public class TaskDao implements Dao<Long, Task> {
                 .name(resultSet.getString("name"))
                 .description(resultSet.getString("description"))
                 .status(Status.valueOf(resultSet.getString("status")))
+                .projectId(resultSet.getLong("project_id_fk"))
                 .taskEventList(taskEventDao.findAllByTaskId(
-                        resultSet.getLong("project_id_fk"),
+                        resultSet.getLong("id"),
                         connection))
                 .build();
     }

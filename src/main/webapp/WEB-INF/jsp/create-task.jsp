@@ -16,6 +16,13 @@
     </label>
     <input type="hidden" name="projectId" value="${requestScope.projectId}">
     <button type="submit">Create</button>
+    <c:if test="${not empty requestScope.errors}">
+        <div style="color: red">
+            <c:forEach var="error" items="${requestScope.errors}">
+                <span>${error.message}</span>
+            </c:forEach>
+        </div>
+    </c:if>
 </form>
 </body>
 </html>
