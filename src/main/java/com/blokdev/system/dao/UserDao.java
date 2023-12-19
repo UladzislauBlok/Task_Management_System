@@ -7,6 +7,7 @@ import com.blokdev.system.util.ConnectionManager;
 import lombok.NoArgsConstructor;
 import lombok.SneakyThrows;
 
+import java.sql.Connection;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
@@ -165,7 +166,7 @@ public class UserDao implements Dao<Long, User> {
     }
 
     @SneakyThrows
-    private User buildUser(ResultSet resultSet) {
+    private User buildUser(ResultSet resultSet, Connection connection) {
         return User.builder()
                 .id(resultSet.getLong("id"))
                 .firstName(resultSet.getString("first_name"))
@@ -175,7 +176,7 @@ public class UserDao implements Dao<Long, User> {
                 .role(Role.valueOf(resultSet.getString("role")))
                 .image(resultSet.getString("image"))
                 .project(projectDao.findById(
-                        resultSet.getLong("project_id_fk"))
+                        resultSet.getLong("project_id_fk"), connection)
                         .orElseThrow(EntryNotFoundException::new))
                 .build();
     }

@@ -145,7 +145,7 @@ public class TaskDao implements Dao<Long, Task> {
                 .name(resultSet.getString("name"))
                 .description(resultSet.getString("description"))
                 .status(Status.valueOf(resultSet.getString("status")))
-                .taskEventList(taskEventDao.findAllByTskId(
+                .taskEventList(taskEventDao.findAllByTaskId(
                         resultSet.getLong("project_id_fk"),
                         connection))
                 .build();

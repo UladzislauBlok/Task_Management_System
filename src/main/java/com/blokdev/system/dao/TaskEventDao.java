@@ -62,7 +62,7 @@ public class TaskEventDao implements Dao<Long, TaskEvent>{
     }
 
     @SneakyThrows
-    public List<TaskEvent> findAllByTskId(Long id, Connection connection) {
+    public List<TaskEvent> findAllByTaskId(Long id, Connection connection) {
         try (var statement = connection.prepareStatement(FIND_ALL_BY_TASK_ID_SQL)) {
             List<TaskEvent> taskEventList = new ArrayList<>();
             statement.setLong(1, id);

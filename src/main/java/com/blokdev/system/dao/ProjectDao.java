@@ -5,8 +5,7 @@ import com.blokdev.system.util.ConnectionManager;
 import lombok.NoArgsConstructor;
 import lombok.SneakyThrows;
 
-import java.sql.Date;
-import java.sql.ResultSet;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -64,18 +63,19 @@ public class ProjectDao implements Dao<Long, Project> {
         }
     }
 
+    @SneakyThrows
+    public Optional<Project> findById(Long id, Connection connection) {
+        try (var statement = connection.prepareStatement(FIND_BY_ID_SQL)) {
+            return findByIdWithStatement(id, statement);
+        }
+    }
+
     @Override
     @SneakyThrows
     public Optional<Project> findById(Long id) {
         try (var connection = ConnectionManager.get();
              var statement = connection.prepareStatement(FIND_BY_ID_SQL)) {
-            statement.setLong(1, id);
-            var resultSet = statement.executeQuery();
-            if (resultSet.next()) {
-                return Optional.of(buildProject(resultSet));
-            } else {
-                return Optional.empty();
-            }
+            return findByIdWithStatement(id, statement);
         }
     }
 
@@ -132,6 +132,16 @@ public class ProjectDao implements Dao<Long, Project> {
             statement.setLong(3, entity.getId());
 
             return statement.executeUpdate() > 0;
+        }
+    }
+
+    private Optional<Project> findByIdWithStatement(Long id, PreparedStatement statement) throws SQLException {
+        statement.setLong(1, id);
+        var resultSet = statement.executeQuery();
+        if (resultSet.next()) {
+            return Optional.of(buildProject(resultSet));
+        } else {
+            return Optional.empty();
         }
     }
 
