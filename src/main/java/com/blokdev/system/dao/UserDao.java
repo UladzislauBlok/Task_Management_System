@@ -1,5 +1,6 @@
 package com.blokdev.system.dao;
 
+import com.blokdev.system.entity.Project;
 import com.blokdev.system.entity.Role;
 import com.blokdev.system.entity.User;
 import com.blokdev.system.exception.EntryNotFoundException;
@@ -9,6 +10,7 @@ import lombok.SneakyThrows;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -44,7 +46,7 @@ public class UserDao implements Dao<Long, User> {
             WHERE id = ?
             """;
     private static final String INSERT_SQL = """
-            INSERT INTO users (first_name, last_name, password, email, role, image, project_id_fk)
+            INSERT INTO users (first_name, last_name, password, email, role, image)
             VALUES (?,?,?,?,?,?)
             """;
     private static final String UPDATE_SQL = """
@@ -175,10 +177,17 @@ public class UserDao implements Dao<Long, User> {
                 .password(resultSet.getString("password"))
                 .role(Role.valueOf(resultSet.getString("role")))
                 .image(resultSet.getString("image"))
-                .project(projectDao.findById(
-                        resultSet.getLong("project_id_fk"), connection)
-                        .orElseThrow(EntryNotFoundException::new))
+                .project(getNullAbleProject(resultSet, connection))
                 .build();
+    }
+
+    private Project getNullAbleProject(ResultSet resultSet, Connection connection) throws SQLException {
+        var projectIdFk = resultSet.getLong("project_id_fk");
+        if (resultSet.wasNull())
+            return null;
+
+        return projectDao.findById(projectIdFk, connection)
+                .orElseThrow(EntryNotFoundException::new);
     }
 
     public static UserDao getInstance() {
