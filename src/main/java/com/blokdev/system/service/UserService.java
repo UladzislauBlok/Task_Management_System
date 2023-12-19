@@ -19,8 +19,6 @@ import static lombok.AccessLevel.PRIVATE;
 
 @NoArgsConstructor(access = PRIVATE)
 public class UserService {
-    private static final String IMAGE_FOLDER = "users";
-    private static final String UNIQUE_IMAGE_NAME_PATTERN = "%s/%d_%s";
     private static final UserService INSTANCE = new UserService();
     private final UserDao userDao = UserDao.getInstance();
     private final UserMapper userMapper = UserMapper.getInstance();
@@ -36,7 +34,7 @@ public class UserService {
         }
         var user = createUserMapper.mapFrom(createUserDTO);
         var savedUser = userDao.save(user);
-        imageService.upload(UNIQUE_IMAGE_NAME_PATTERN.formatted(IMAGE_FOLDER, savedUser.getId(), createUserDTO.getImage().getSubmittedFileName()),
+        imageService.upload(savedUser.getId(), createUserDTO.getImage().getSubmittedFileName(),
                 createUserDTO.getImage().getInputStream()); // using userId like unique image index
         return savedUser;
     }

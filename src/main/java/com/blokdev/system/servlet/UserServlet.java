@@ -25,7 +25,7 @@ public class UserServlet extends HttpServlet {
             Long userId = Long.valueOf(req.getParameter("id"));
             req.setAttribute("user", userService.getUserById(userId));
 
-            req.getRequestDispatcher(JspPathUtil.getPath("project"))
+            req.getRequestDispatcher(JspPathUtil.getPath("user"))
                     .forward(req, resp);
         }
     }

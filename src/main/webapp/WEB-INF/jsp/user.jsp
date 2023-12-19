@@ -2,17 +2,16 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
 <head>
-    <title>User list</title>
+    <title>User</title>
 </head>
 <body>
-<h1>List of projects:</h1>
-<ul>
-    <c:forEach var="user" items="${requestScope.users}">
-        <li>
-            <a href="user?id=${user.id}">${user.firstName} ${user.lastName} ${user.email}</a>
-            <br>
-        </li>
-    </c:forEach>
-</ul>
+    <h1>User ${requestScope.user.firstName} ${requestScope.user.lastName}</h1>
+    <img src="${pageContext.request.contextPath}/images/users?id=${requestScope.user.id}&image=${requestScope.user.image}" alt="user img">
+    <br>
+    <p>Email: ${requestScope.user.email}</p>
+    <p>Role: ${requestScope.user.role}</p>
+    <br>
+    <p>Project: <a href="project?id=${requestScope.user.project.id}">${requestScope.user.project.name}</a>
+    </p>
 </body>
 </html>
