@@ -3,7 +3,6 @@ package com.blokdev.system.service;
 import com.blokdev.system.dao.UserDao;
 import com.blokdev.system.dto.CreateUserDTO;
 import com.blokdev.system.dto.UserDTO;
-import com.blokdev.system.entity.User;
 import com.blokdev.system.exception.EntryNotFoundException;
 import com.blokdev.system.exception.ValidationException;
 import com.blokdev.system.mapper.CreateUserMapper;
@@ -27,7 +26,7 @@ public class UserService {
     private final ImageService imageService = ImageService.getInstance();
 
     @SneakyThrows
-    public User create(CreateUserDTO createUserDTO) {
+    public void create(CreateUserDTO createUserDTO) {
         var validationResult = createUserValidator.isValid(createUserDTO);
         if (!validationResult.isValid()) {
             throw new ValidationException(validationResult.getValidationErrorList());
@@ -36,7 +35,6 @@ public class UserService {
         var savedUser = userDao.save(user);
         imageService.upload(savedUser.getId(), createUserDTO.getImage().getSubmittedFileName(),
                 createUserDTO.getImage().getInputStream()); // using userId like unique image index
-        return savedUser;
     }
 
     public List<UserDTO> getAllUsers() {
@@ -44,7 +42,6 @@ public class UserService {
                 .map(userMapper::mapFrom)
                 .collect(Collectors.toList());
     }
-
 
     public UserDTO getUserById(Long userId) {
         var user = userDao.findById(userId)

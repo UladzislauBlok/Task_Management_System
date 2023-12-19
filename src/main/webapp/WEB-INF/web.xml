@@ -5,6 +5,10 @@
          version="5.0">
     <error-page>
         <exception-type>com.blokdev.system.exception.EntryNotFoundException</exception-type>
-        <location>/WEB-INF/jsp/entry-not-found.jsp</location>
+        <location>/WEB-INF/jsp/error_pages/entry-not-found.jsp</location>
+    </error-page>
+    <error-page>
+        <exception-type>com.blokdev.system.exception.InvalidURLException</exception-type>
+        <location>/WEB-INF/jsp/error_pages/invalid-url.jsp</location>
     </error-page>
 </web-app>

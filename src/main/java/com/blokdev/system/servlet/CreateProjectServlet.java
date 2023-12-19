@@ -24,14 +24,14 @@ public class CreateProjectServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        var projectDTO = CreateProjectDTO.builder()
+        var createProjectDTO = CreateProjectDTO.builder()
                 .name(req.getParameter("name"))
                 .description(req.getParameter("project_description"))
                 .startDate(req.getParameter("project_start_date"))
                 .build();
 
         try {
-            projectService.createProject(projectDTO);
+            projectService.createProject(createProjectDTO);
         } catch (ValidationException e) {
             req.setAttribute("errors", e.getValidationErrorList());
         } finally {
