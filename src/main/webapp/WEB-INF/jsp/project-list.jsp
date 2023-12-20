@@ -15,5 +15,8 @@
             </li>
         </c:forEach>
     </ul>
+<%@ include file="headers/create-project-button.jsp"%>
+<br>
+<%@ include file="headers/add-user-to-project-button.jsp"%>
 </body>
 </html>

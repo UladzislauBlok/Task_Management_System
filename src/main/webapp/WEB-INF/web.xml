@@ -11,4 +11,12 @@
         <exception-type>com.blokdev.system.exception.InvalidURLException</exception-type>
         <location>/WEB-INF/jsp/error_pages/invalid-url.jsp</location>
     </error-page>
+    <filter>
+        <filter-name>AuthenticationFilter</filter-name>
+        <filter-class>com.blokdev.system.filter.AuthenticationFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>AuthenticationFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
 </web-app>

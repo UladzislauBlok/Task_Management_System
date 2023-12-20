@@ -12,6 +12,12 @@
     <p>Status: ${requestScope.task.status}</p>
     <a href="${pageContext.request.contextPath}/project?id=${requestScope.task.projectId}">Project</a>
     <br>
+    <c:if test="${sessionScope.user.project.id eq requestScope.task.projectId}">
+        <form action="${pageContext.request.contextPath}/create-task-event" method="get">
+            <input type="hidden" name="taskId" value="${requestScope.task.id}">
+            <button type="submit">Create task event</button>
+        </form>
+    </c:if>
     <ol>
     <c:forEach var="taskEvent" items="${requestScope.task.taskEventList}">
         <li>
