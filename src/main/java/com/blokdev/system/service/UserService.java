@@ -3,6 +3,7 @@ package com.blokdev.system.service;
 import com.blokdev.system.dao.UserDao;
 import com.blokdev.system.dto.CreateUserDTO;
 import com.blokdev.system.dto.UserDTO;
+import com.blokdev.system.entity.Role;
 import com.blokdev.system.exception.EntryNotFoundException;
 import com.blokdev.system.exception.ValidationException;
 import com.blokdev.system.mapper.CreateUserMapper;
@@ -48,6 +49,7 @@ public class UserService {
     public List<UserDTO> getAllUsersWithoutProject() {
         return getAllUsers().stream()
                 .filter(userDTO -> userDTO.getProject() == null)
+                .filter(userDTO -> !userDTO.getRole().equals(Role.ADMIN))
                 .toList();
     }
 

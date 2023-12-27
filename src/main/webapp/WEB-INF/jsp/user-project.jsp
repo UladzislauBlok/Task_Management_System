@@ -8,13 +8,13 @@
 <%@ include file="headers/logout.jsp"%>
 <form action="${pageContext.request.contextPath}/user-project" method="post">
     <label for="user">
-        <select name="user" id="user">
+        <select name="user" id="user" required>
             <c:forEach var="user" items="${requestScope.users}">
                 <option value="${user.id}">${user.email}</option>
             </c:forEach>
         </select></label><br>
     <label for="project">
-        <select name="project" id="project">
+        <select name="project" id="project" required>
             <c:forEach var="project" items="${requestScope.projects}">
                 <option value="${project.id}">${project.name}</option>
             </c:forEach>
