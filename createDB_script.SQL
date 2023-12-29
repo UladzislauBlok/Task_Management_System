@@ -44,3 +44,8 @@ CREATE TABLE task_events
     description     TEXT                          NOT NULL,
     event_user_name VARCHAR(255)                  NOT NULL
 );
+
+/*Enter the administrator's details in the query!*/
+INSERT INTO users(id, first_name, last_name, password, email, role, image, project_id_fk)
+VALUES (1, 'Admin_Name', 'Admin_Surname', 'Admin_pass', 'AdminMail@', 'ADMIN', 'image.extensions', NULL)
+/*Do not change the ID, user type and NULL value!!*/
