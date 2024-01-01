@@ -2,7 +2,7 @@
 
 **Description:**
 
-The Project Management System is designed to efficiently plan, track and control project tasks. The major components of the project include a web application based on Java technologies such as HttpServlet, JSP (JavaServer Pages), and JDBC (Java Database Connectivity).
+A project management system designed for efficient planning, tracking and controlling of project tasks. The main components of the project include a web application based on Java technologies such as HttpServlet, JSP (JavaServer Pages) and JDBC (Java Database Connectivity).
 
 **Main functions:**
 
